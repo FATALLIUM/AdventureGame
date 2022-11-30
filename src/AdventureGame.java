@@ -7,14 +7,16 @@ public class AdventureGame {
     private int playerHealth;
     private int decision;
     private Scanner scan;
-    private int enemyHealth;
+    private int mushroomHealth;
+    private int pineappleHealth;
     private String inventory;
 
     // constructors
     public AdventureGame (String name) {
         this.name = name;
         this.playerHealth = 100;
-        this.enemyHealth = 100;
+        this.mushroomHealth = 100;
+        this.pineappleHealth = 200;
         scan = new Scanner(System.in);
         inventory = "";
     }
@@ -23,7 +25,8 @@ public class AdventureGame {
     public AdventureGame () {
         name = "Bob";
         this.playerHealth = 100;
-        this.enemyHealth = 100;
+        this.mushroomHealth = 100;
+        this.pineappleHealth = 200;
         scan = new Scanner(System.in);
         inventory = "";
     }
@@ -82,7 +85,7 @@ public class AdventureGame {
 
         System.out.println("You continue on your journey to find berries.");
         System.out.println("...");
-        System.out.println("It's quiet, until something clinks behind you. Turn around? \nYes (1)  \n No? (2) \n");
+        System.out.println("It's quiet, until something clinks behind you. Turn around? \nYes (1)  \nNo? (2) \n");
         decision = scan.nextInt();
         scan.nextLine();
         switch (decision) {
@@ -125,7 +128,7 @@ public class AdventureGame {
         switch (decision) {
             case 1:
                 System.out.println("You pick up the rock. Violence is not the question... but the answer!!!");
-                battleMushroom();
+                battle("mushroom");
                 break;
             case 2:
                 if (inventory.contains("flower")) {
@@ -141,21 +144,43 @@ public class AdventureGame {
                 }
                 break;
         }
+        System.out.println(".\n.\n.\n.\n.\n.\nWould you like to play a secret boss?\nYes (1) \nNo (2)\n");
+        decision = scan.nextInt();
+        scan.nextLine();
+        switch (decision) {
+            case 1:
+                System.out.println("You continue your journey... delving deeper and deeper." +
+                        " The sun has long set and the shadows are tall. You're tired and hungry and berry-less.");
+                System.out.println("In the distance, you see something gold. What could that be?\nLook (1) \nStay where you are (2) \n");
+                System.out.println("You head towards the golden light and find... ");
+                System.out.println("A pineapple!!!\nIt seems rather angry for some reason");
+                battle("pineapple");
+                break;
+            case 2:
+                System.out.println("Well, that's all for the DLC! Stay tuned for R*s*d*n* E*i* 9!");
+        }
+
     }
 
     // battle method
-    public void battleMushroom() {
+    public void battle(String monster) {
         int turn = 0;
         boolean fightEnd = false;
-        int randomNum = (int) (Math.random() * 3) + 1;
         String randomText = "";
+        int death = 0;
+
+        System.out.println("You start first!");
+        if (monster.equals("pineapple")) {
+            System.out.println("You are facing a god.\n\n\nYou are filled with determination; you inflict 30 damage each turn!");
+        }
 
         while (turn < 7 && !fightEnd) {
+            int randomNum = (int) (Math.random() * 3) + 1;
             int playerAttack = 0;
             int enemyAttack = 0;
 
             // player turn
-            System.out.println("You start first!");
+
             System.out.print("Battle choices: \n(1) Rock \n(2) Paper \n(3) Scissors \n(4) Potion \n"); // gives player's choices
             decision = scan.nextInt();
             scan.nextLine();
@@ -164,68 +189,140 @@ public class AdventureGame {
 
             if (decision == 1) { // rock
                 System.out.println("You used Rock! You dealt " + playerAttack + " damage!");
-            }
-            else if (decision == 2) { // paper
+            } else if (decision == 2) { // paper
                 System.out.println("You used Paper! You dealt " + playerAttack + " damage!");
             } else if (decision == 3) { // scissors
                 System.out.println("You used Scissors! You dealt " + playerAttack + " damage! However, you accidentally " +
                         "stab yourself with it, dealing 10 damage to yourself!");
-            }
-            else {
+            } else {
                 // heal?
                 if (inventory.contains("potion")) {
-                    System.out.println("You used the Potion! You healed 20 HP!" );
+                    System.out.println("You used the Potion! You healed 20 HP!");
                     playerHealth += 20;
-                }
-                else {
+                } else {
                     System.out.println("You don't have this item! Oh well!");
                 }
             }
             System.out.println("--------------------------------------------------------------------------");
             System.out.println("--------------------------------------------------------------------------");
-            enemyHealth -= playerAttack;
+            mushroomHealth -= playerAttack;
 
-            // mushroom turn
-            enemyAttack = mushroomAttack();
-            switch (randomNum) {
-                case 1:
-                    randomText = "Mushroom did a cartwheel! It was very awe-inspiring!";
-                    break;
-                case 2:
-                    randomText = "Mushroom slapped you! It reminded you of your - !!!";
-                    break;
-                case 3:
-                    randomText = "Mushroom flirted with you! You feel confused???";
-                    break;
-            }
-            System.out.println(randomText +  " It dealt " + enemyAttack + " damage!");
-            playerHealth -= enemyAttack;
+            if (monster.equals("mushroom")) {
+                // mushroom turn
+                mushroomLook();
+                enemyAttack = mushroomAttack();
+                switch (randomNum) {
+                    case 1:
+                        randomText = "Mushroom did a cartwheel! It was very awe-inspiring!";
+                        break;
+                    case 2:
+                        randomText = "Mushroom slapped you! It reminded you of your - !!!";
+                        break;
+                    case 3:
+                        randomText = "Mushroom flirted with you! You feel confused???";
+                        break;
+                }
+                System.out.println(randomText + " It dealt " + enemyAttack + " damage!");
+                playerHealth -= enemyAttack;
 
-            // print hp status
-            System.out.println("--------------------------------------------------------------------------");
-            System.out.println("--------------------------------------------------------------------------");
-            System.out.println("You have " + playerHealth + " HP!");
-            System.out.println("Mushroom has " + enemyHealth + " HP!\n\n");
-            turn++;
-            if (playerHealth <= 0) {
-                System.out.println("You have lost the battle! You become a mushroom ghost and roam the lands.\n\n\n" +
-                        "[I SHOULD HAVE WATERED MY FISH ENDING ACHIEVED - ENDING 3]\n\n" +
-                        name + " SIGNING OUT!");
-                fightEnd = true;
+                // print hp status
+                System.out.println("--------------------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------------------");
+                System.out.println("You have " + playerHealth + " HP!");
+                System.out.println("Mushroom has " + mushroomHealth + " HP!\n\n");
+                turn++;
+                if (playerHealth <= 0) {
+                    System.out.println("You have lost the battle! You become a mushroom ghost and roam the lands.\n\n\n" +
+                            "[I SHOULD HAVE WATERED MY FISH ENDING ACHIEVED - ENDING 3]\n\n" +
+                            name + " SIGNING OUT!");
+                    fightEnd = true;
+                } else if (mushroomHealth <= 0) {
+                    System.out.println("You won! The mushroom monster waddles away, defeated and bruised.\n" +
+                            "You feel kind of bad for it...\n" +
+                            "You decide to head home after that, holding a bloodied rock.\n\n\n" +
+                            "[YOUR MOTHER RAISED A VIOLENT CHILD ENDING ACHIEVED - ENDING 4]\n\n" +
+                            name + " SIGNING OUT!");
+                    fightEnd = true;
+                }
             }
-            else if (enemyHealth <= 0) {
-                System.out.println("You won! The mushroom monster waddles away, defeated and bruised.\n" +
-                        "You feel kind of bad for it...\n" +
-                        "You decide to head home after that, holding a bloodied rock.\n\n\n" +
-                        "[YOUR MOTHER RAISED A VIOLENT CHILD ENDING ACHIEVED - ENDING 4]\n\n" +
-                        name + " SIGNING OUT!");
-                fightEnd = true;
+            else if (monster.equals("pineapple")) {
+                // pineapple fight
+                if (turn == 4) {
+                    System.out.println("\n\nThis is rather difficult, isn't it?\n\n[W I S H] (1)\n");
+                    decision = scan.nextInt();
+                    scan.nextLine();
+                    if (decision == 1) {
+                        System.out.println("You WISHED. For what you weren't sure. For who you didn't know.\nYou feel rejuvenated.\n\n\nHP fully healed.\n\n");
+                        playerHealth = 100;
+                    }
+                }
+                enemyAttack = pineappleAttack();
+                switch (enemyAttack) {
+                    case 30:
+                        randomText = "The pineapple god sings a lullaby! How did you take damage???" +
+                                " You start feeling sleepy... but you snap out of it!";
+                        break;
+                    case 15:
+                        randomText = "The pineapple god exploded!!! That hurt a lot!";
+                        break;
+                    case 10:
+                        randomText = "The pineapple god threw a chair at you. Where did it get a chair from???";
+                        break;
+                    case 5:
+                        randomText = "The pineapple god made fun of your mother!!! What will you do???";
+                        break;
+                }
+                System.out.println(randomText + " It dealt " + enemyAttack + " damage!");
+                playerHealth -= enemyAttack;
+
+                System.out.println("\nYou inflicted 30 damage!");
+                pineappleHealth -= 30;
+
+                // print hp status
+                System.out.println("--------------------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------------------");
+                System.out.println("You have " + playerHealth + " HP!");
+                System.out.println("The pineapple god has " + pineappleHealth + " HP!\n\n");
+                turn++;
+                if (playerHealth <= 0) {
+                    System.out.println("You have lost the battle! The pineapple god laughs at you!!!\n\n\n" +
+                            "[I SHOULD HAVE WATERED MY FISH ENDING ACHIEVED - ENDING 3]\n\n" +
+                            name + " SIGNING OUT!");
+                    death ++;
+                    if (death <= 4) {
+                        System.out.println("...\n\n\n\n\nContinue?\nYes (1) \nNo (2)\n");
+                        decision = scan.nextInt();
+                        scan.nextLine();
+                        switch (decision) {
+                            case 1:
+                                System.out.println("...\n\n\n");
+                                turn = 0;
+                                playerHealth = 100;
+                                break;
+                            case 2:
+                                fightEnd = true;
+                                break;
+                        }
+                    }
+                } else if (pineappleHealth <= 0) {
+                    System.out.println("You have killed a god. The pineapple god dissolves in the golden wind.\n" +
+                            "What will you do now? There's nothing left for you, or anyone else.\n" +
+                            "The sky has lost it's sun and the world is plunged into darkness.\n\n\n" +
+                            "[DER EINE ENDING ACHIEVED - SECRET ENDING]\n\n" +
+                            name + " SIGNING OUT!");
+                    fightEnd = true;
+                }
+                else if (death == 5) {
+                    System.out.println("\nYou have no right." +
+                            "\n\n\n[OBLITERATED ENDING ACHIEVED - ENDING 7]");
+                    fightEnd = true;
+                }
             }
-        }
-        if (turn == 6) {
-            System.out.println("You couldn't defeat the mushroom monster in time! You run away like how I ran from my ex-wife!" +
-                    "\n\n\n[WHAT IS WRONG WITH THESE ENDING NAMES ENDING ACHIEVED - ENDING 5]\n\n" +
-                    name + " SIGNING OUT!");
+            if (turn == 6) {
+                System.out.println("You couldn't defeat the " +  monster + " in time! You run away like how I ran from my ex-wife!" +
+                        "\n\n\n[WHAT IS WRONG WITH THESE ENDING NAMES ENDING ACHIEVED - ENDING 5]\n\n" +
+                        name + " SIGNING OUT!");
+            }
         }
     }
 
@@ -292,5 +389,20 @@ public class AdventureGame {
     // mushroom will randomly deal 1-20 dmg
     public int mushroomAttack() {
         return (int) (Math.random() * 40) + 1;
+    }
+
+    public int pineappleAttack() {
+        int randomNum = (int) (Math.random() * 3) + 1;
+        switch (randomNum) {
+            case 1:
+                pineappleHealth -= 10;
+                return 30;
+            case 2:
+                pineappleHealth -=5;
+                return 15;
+            case 3:
+                return 5;
+        }
+        return 10;
     }
 }

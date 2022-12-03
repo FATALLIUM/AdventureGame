@@ -16,11 +16,11 @@ public class Main {
     if (name.equals("")) { // if the player has entered nothing
         System.out.println("... your name is Bob now");
         AdventureGame game = new AdventureGame();
-        game.play();
+        game.printStory();
     } else if (name.equals("Steve")) { // if the player has entered 'Steve'
         System.out.println("Steve? Oh, like that mushroom ghost");
     }
-    AdventureGame game = new AdventureGame();
-    game.play();
+    AdventureGame game = new AdventureGame(name);
+    game.printStory();
     }
 }

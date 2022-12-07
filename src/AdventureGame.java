@@ -180,9 +180,9 @@ public class AdventureGame {
                     break;
                 case "2":
                     if (inventory.contains("flower")) {
-                        printEnding(1);
+                        printStory(1);
                     } else {
-                        printEnding(2);
+                        printStory(2);
                     }
                     quit = true;
                     break;
@@ -197,7 +197,7 @@ public class AdventureGame {
     }
 
     // battle method
-    private void battle(String monster) {
+    public void battle(String monster) {
         int turn = 0;
         String randomText = "";
         int death = 0;
@@ -205,7 +205,7 @@ public class AdventureGame {
 
         System.out.println("You start first!");
         if (monster.equals("pineapple")) {
-            System.out.println("You are facing a god. You can feel your health being restored\n\n\nYou are filled with determination; you inflict an extra 20 damage each turn!");
+            System.out.println("You are facing a god. You can feel your health being restored\n\n\nYou are filled with determination and obtained a +20 attack buff.");
         }
 
         while (turn < 8) {
@@ -222,6 +222,7 @@ public class AdventureGame {
 
             if (decision.equals("1")) { // rock
                 System.out.println("You used Rock! You dealt " + playerAttack + " damage!");
+
             } else if (decision.equals("2")) { // paper
                 System.out.println("You used Paper! You dealt " + playerAttack + " damage!");
             } else if (decision.equals("3")) { // scissors
@@ -240,9 +241,9 @@ public class AdventureGame {
             }
             System.out.println("--------------------------------------------------------------------------");
             System.out.println("--------------------------------------------------------------------------");
-            mushroomHealth -= playerAttack;
 
             if (monster.equals("mushroom")) {
+                mushroomHealth -= playerAttack;
                 // mushroom turn
                 mushroomLook();
                 enemyAttack = enemyAttack("mushroom");
@@ -267,20 +268,21 @@ public class AdventureGame {
                 System.out.println("Mushroom has " + mushroomHealth + " HP!\n\n");
                 turn++;
                 if (playerHealth <= 0 && mushroomHealth <= 0) {
-                    printEnding(8);
+                    printStory(8);
                     System.exit(0);
                 } else if (playerHealth <= 0) {
-                    printEnding(10);
+                    printStory(10);
                     System.exit(0);
                 } else if (mushroomHealth <= 0) {
-                    printEnding(4);
+                    printStory(4);
                     mushroomDead = true;
                     playerHealth = 100;
                 }
             }
             else if (monster.equals("pineapple")) {
+                pineappleHealth -= playerAttack + 20;
                 // pineapple fight
-                if (turn == 4) {
+                if ((turn == 4) && (pineappleHealth > 0) && (playerHealth > 0)) {
                     System.out.println("\n\nThis is rather difficult, isn't it?\n\n[W I S H] \n(1)\n");
                     decision = scan.nextLine();
                     if (decision.equals("1")) {
@@ -309,9 +311,6 @@ public class AdventureGame {
                 System.out.println(randomText + " It dealt " + enemyAttack + " damage!");
                 playerHealth -= enemyAttack;
 
-                System.out.println("\nYou inflicted 20 damage!");
-                pineappleHealth -= 20;
-
                 // print hp status
                 System.out.println("--------------------------------------------------------------------------");
                 System.out.println("--------------------------------------------------------------------------");
@@ -320,11 +319,11 @@ public class AdventureGame {
                 turn++;
 
                 if (playerHealth <= 0 && pineappleHealth <= 0) {
-                    printEnding(9);
+                    printStory(9);
                     System.exit(0);
                 }
                 else if (playerHealth <= 0) {
-                    printEnding(3);
+                    printStory(3);
                     death ++;
                     if (death < 3) {
                         System.out.println("...\n\n\n\n\nContinue?\nYes (1) \nNo (2)\n");
@@ -354,16 +353,16 @@ public class AdventureGame {
                         } while (!again );
                     }
                 } else if (pineappleHealth <= 0) {
-                    printEnding(6);
+                    printStory(6);
                     System.exit(0);
                 }
                 else if (death == 2) {
-                    printEnding(7);
+                    printStory(7);
                     System.exit(0);
                 }
             }
             if (turn == 7) {
-                printEnding(5);
+                printStory(5);
                 System.exit(0);
             }
             if (mushroomDead) {
@@ -479,11 +478,9 @@ public class AdventureGame {
         // Pineapple attack
         int randomNum = (int) (Math.random() * 3) + 1;
         switch (randomNum) {
-            case 1: // Pineapple loses 10 hp and deals 30 dmg
-                pineappleHealth -= 10;
+            case 1: // Pineapple deals 30 dmg
                 return 30;
-            case 2: // Pineapple loses 5 hp and deals 15 dmg
-                pineappleHealth -=5;
+            case 2: // Pineapple deals 15 dmg
                 return 15;
             case 3: // Pineapple deals 5 dmg
                 return 5;
@@ -492,13 +489,13 @@ public class AdventureGame {
     }
 
     // prints what ending the player gets
-    private void printEnding(int endingNumber) {
+    private void printStory(int endingNumber) {
         switch (endingNumber) {
             case 1: // You decide to chill with the mushroom and have the flower
                 System.out.println("You decide to give the red flower you picked up earlier to the mushroom.\n" +
                         "It seems very happy. You invite the mushroom to your house and have some hot soup.\n\n\n" +
-                        "[HAPPY-GO-LUCKY MUSHROOM TAMER ENDING ACHIEVED - ENDING 1]\n\n" +
-                        name + "SIGNING OUT!");
+                        "[HAPPY-GO-LUCKY MUSHROOM-FLOWER TAMER ENDING ACHIEVED - ENDING 1]\n\n" +
+                        name + " SIGNING OUT!");
                 break;
             case 2: // You decide to chill with the mushroom and don't have the flower
                 System.out.println("The two of you have a nice chat about chickens and watermelons.\n" +
@@ -551,18 +548,3 @@ public class AdventureGame {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

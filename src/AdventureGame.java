@@ -1,17 +1,46 @@
-//dmg = damage
+/**
+ * This class represents a short text-based adventure game.
+ *
+ * @author Jiamin Zeng, Josephine Choong
+ */
 import java.util.Scanner;
 
 public class AdventureGame {
-    //attributes
+    // attributes
+    /**
+     * The name of the player.
+     */
     private String name;
+    /**
+     * The player's health.
+     */
     private int playerHealth;
+    /**
+     * The player's input.
+     */
     private String decision;
+    /**
+     * The Scanner object.
+     */
     private Scanner scan;
+    /**
+     * The mushroom enemy's health.
+     */
     private int mushroomHealth;
+    /**
+     * The pineapple enemy's health.
+     */
     private int pineappleHealth;
+    /**
+     * The player's inventory.
+     */
     private String inventory;
 
     // constructors
+    /**
+     * Instantiates an AdventureGame object (with the player's name).
+     * @param name Player name
+     */
     public AdventureGame (String name) {
         this.name = name;
         this.playerHealth = 100;
@@ -22,6 +51,9 @@ public class AdventureGame {
     }
 
     // uses a default name if the player has entered nothing for the name
+    /**
+     * Instantiates an AdventureGame object (without player's name).
+     */
     public AdventureGame () {
         name = "Bob";
         this.playerHealth = 100;
@@ -31,11 +63,12 @@ public class AdventureGame {
         inventory = "";
     }
 
-
-
     // helper methods
 
     // prints the adventure out
+    /**
+     * Void method that contains a majority of the gameplay (player choices and story).
+     */
     public void printStory() {
         int randomNum = (int) (Math.random() * 3) + 1;
         String randomWord = "";
@@ -197,7 +230,12 @@ public class AdventureGame {
     }
 
     // battle method
-    public void battle(String monster) {
+    /**
+     * Battle system.
+     *
+     * @param monster The enemy name
+     */
+    private void battle(String monster) {
         int turn = 0;
         String randomText = "";
         int death = 0;
@@ -411,6 +449,9 @@ public class AdventureGame {
     }
 
     // print out handsome mushroom
+    /**
+     * Prints out a mushroom.
+     */
     private void mushroomLook() {
         int l = 0;
         int s = 0;
@@ -446,6 +487,12 @@ public class AdventureGame {
 
     // attack methods
     // based on the player's decision, will do different amounts of dmg
+    /**
+     * Returns the player's attack.
+     *
+     * @param decision The player's choice of attack.
+     * @return The player's attack depending on what attack they chose.
+     */
     private int playerAttack(String decision) {
         int attack = 0;
         switch (decision) {
@@ -470,6 +517,12 @@ public class AdventureGame {
     }
 
     // mushroom will randomly deal 1-30 dmg
+    /**
+     * Returns a monster's attack.
+     *
+     * @param monster The enemy name
+     * @return The enemy's attack depending on what enemy (String monster) the player is facing
+     */
     private int enemyAttack(String monster) {
         // Mushroom attack
         if (monster.equals("mushroom")) {
@@ -487,7 +540,11 @@ public class AdventureGame {
         }
         return 10;
     }
-
+    /**
+     * Prints an ending depending on the (int endingNumber).
+     *
+     * @param endingNumber Returns one of endings 1-10.
+     */
     // prints what ending the player gets
     private void printStory(int endingNumber) {
         switch (endingNumber) {

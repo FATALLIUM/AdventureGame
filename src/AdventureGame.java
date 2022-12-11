@@ -45,7 +45,7 @@ public class AdventureGame {
         this.name = name;
         this.playerHealth = 100;
         this.mushroomHealth = 100;
-        this.pineappleHealth = 200;
+        this.pineappleHealth = 250;
         scan = new Scanner(System.in);
         inventory = "";
     }
@@ -58,7 +58,7 @@ public class AdventureGame {
         name = "Bob";
         this.playerHealth = 100;
         this.mushroomHealth = 100;
-        this.pineappleHealth = 200;
+        this.pineappleHealth = 250;
         scan = new Scanner(System.in);
         inventory = "";
     }
@@ -243,7 +243,7 @@ public class AdventureGame {
 
         System.out.println("You start first!");
         if (monster.equals("pineapple")) {
-            System.out.println("You are facing a god. You can feel your health being restored\n\n\nYou are filled with determination and obtained a +20 attack buff.");
+            System.out.println("You are facing a god. You can feel your health being restored\n\n\nYou are filled with determination and inflict 20 damage per turn");
         }
 
         while (turn < 8) {
@@ -395,6 +395,7 @@ public class AdventureGame {
                     System.exit(0);
                 }
                 else if (death == 2) {
+
                     printStory(7);
                     System.exit(0);
                 }
@@ -531,8 +532,8 @@ public class AdventureGame {
         // Pineapple attack
         int randomNum = (int) (Math.random() * 3) + 1;
         switch (randomNum) {
-            case 1: // Pineapple deals 30 dmg
-                return 30;
+            case 1: // Pineapple deals 40 dmg
+                return 40;
             case 2: // Pineapple deals 15 dmg
                 return 15;
             case 3: // Pineapple deals 5 dmg

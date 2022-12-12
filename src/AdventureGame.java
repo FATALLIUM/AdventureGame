@@ -35,6 +35,10 @@ public class AdventureGame {
      * The player's inventory.
      */
     private String inventory;
+    /**
+     * Endings.
+     */
+    private String[] endings = {"1. ", "2. ", "3. ", "4. ", "5. ", "6. ", "7. ", "8. ", "9. ", "10. "};
 
     // constructors
     /**
@@ -43,9 +47,9 @@ public class AdventureGame {
      */
     public AdventureGame (String name) {
         this.name = name;
-        this.playerHealth = 100;
-        this.mushroomHealth = 100;
-        this.pineappleHealth = 250;
+        playerHealth = 100;
+        mushroomHealth = 100;
+        pineappleHealth = 250;
         scan = new Scanner(System.in);
         inventory = "";
     }
@@ -56,9 +60,9 @@ public class AdventureGame {
      */
     public AdventureGame () {
         name = "Bob";
-        this.playerHealth = 100;
-        this.mushroomHealth = 100;
-        this.pineappleHealth = 250;
+        playerHealth = 100;
+        mushroomHealth = 100;
+        pineappleHealth = 250;
         scan = new Scanner(System.in);
         inventory = "";
     }
@@ -105,7 +109,7 @@ public class AdventureGame {
         }
         while (!quit);
 
-        System.out.println("You continue your journey and find a flower. It's red. You pick it up.");
+        System.out.println("You continue your journey and find a flower. It's red.");
         System.out.println("Pick it up? \nYes (1) \nNo (2) \n");
         decision = scan.nextLine();
 
@@ -243,7 +247,7 @@ public class AdventureGame {
 
         System.out.println("You start first!");
         if (monster.equals("pineapple")) {
-            System.out.println("You are facing a god. You can feel your health being restored\n\n\nYou are filled with determination and inflict 20 damage per turn");
+            System.out.println("You are facing a god. Your health is restored.\n\n\nYou are filled with determination and inflict 20 damage per turn");
         }
 
         while (turn < 8) {
@@ -271,6 +275,10 @@ public class AdventureGame {
                 if (inventory.contains("potion")) {
                     System.out.println("You used the Potion! You healed 20 HP!");
                     playerHealth += 20;
+                    if (playerHealth > 100) {
+                        playerHealth = 100;
+                        System.out.println("Your health is maxed out!");
+                    }
                 } else {
                     System.out.println("You don't have this item! Oh well!");
                 }
@@ -307,10 +315,10 @@ public class AdventureGame {
                 turn++;
                 if (playerHealth <= 0 && mushroomHealth <= 0) {
                     printStory(8);
-                    System.exit(0);
+                    menu();
                 } else if (playerHealth <= 0) {
                     printStory(10);
-                    System.exit(0);
+                    menu();
                 } else if (mushroomHealth <= 0) {
                     printStory(4);
                     mushroomDead = true;
@@ -358,7 +366,7 @@ public class AdventureGame {
 
                 if (playerHealth <= 0 && pineappleHealth <= 0) {
                     printStory(9);
-                    System.exit(0);
+                    menu();
                 }
                 else if (playerHealth <= 0) {
                     printStory(3);
@@ -392,17 +400,17 @@ public class AdventureGame {
                     }
                 } else if (pineappleHealth <= 0) {
                     printStory(6);
-                    System.exit(0);
+                    menu();
                 }
                 else if (death == 2) {
 
                     printStory(7);
-                    System.exit(0);
+                    menu();
                 }
             }
             if (turn == 7) {
                 printStory(5);
-                System.exit(0);
+                menu();
             }
             if (mushroomDead) {
                 System.out.println(".\n.\n.\n.\n.\n.\nWould you like to play a secret boss?\nYes (1) \nNo (2)\n");
@@ -437,7 +445,7 @@ public class AdventureGame {
 
                         case "2":
                             System.out.println("Well, that's all for the DLC! Stay tuned for R*s*d*n* E*i* 9!");
-                            System.exit(0);
+                            menu();
                         default:
                             System.out.println("Huh? \nWould you like to play a secret boss?\nYes (1) \nNo (2)\n");
                             decision = scan.nextLine();
@@ -550,23 +558,27 @@ public class AdventureGame {
     private void printStory(int endingNumber) {
         switch (endingNumber) {
             case 1: // You decide to chill with the mushroom and have the flower
+                endings[0] = "[HAPPY-GO-LUCKY MUSHROOM-FLOWER TAMER ENDING ACHIEVED - ENDING 1]";
                 System.out.println("You decide to give the red flower you picked up earlier to the mushroom.\n" +
                         "It seems very happy. You invite the mushroom to your house and have some hot soup.\n\n\n" +
                         "[HAPPY-GO-LUCKY MUSHROOM-FLOWER TAMER ENDING ACHIEVED - ENDING 1]\n\n" +
                         name + " SIGNING OUT!");
                 break;
             case 2: // You decide to chill with the mushroom and don't have the flower
+                endings[1] = "[HAPPY-GO-LUCKY MUSHROOM TAMER ENDING ACHIEVED - ENDING 2]";
                 System.out.println("The two of you have a nice chat about chickens and watermelons.\n" +
                         "You invite the mushroom to your house and have some hot soup.\n\n\n" +
                         "[HAPPY-GO-LUCKY MUSHROOM TAMER ENDING ACHIEVED - ENDING 2]\n\n" +
                         name + " SIGNING OUT!");
                 break;
             case 3: // You lose to the pineapple
+                endings[2] = "[I SHOULD HAVE WATERED MY FISH ENDING ACHIEVED - ENDING 3]";
                 System.out.println("You have lost the battle! The pineapple god laughs at you!!!\n\n\n" +
                         "[I SHOULD HAVE WATERED MY FISH ENDING ACHIEVED - ENDING 3]\n\n" +
                         name + " SIGNING OUT!");
                 break;
             case 4: // You defeat the mushroom
+                endings[3] = "[YOUR MOTHER RAISED A VIOLENT CHILD ENDING ACHIEVED - ENDING 4]";
                 System.out.println("You won! The mushroom monster waddles away, defeated and bruised.\n" +
                         "You feel kind of bad for it...\n" +
                         "You decide to head home after that, holding a bloodied rock.\n\n\n" +
@@ -574,11 +586,13 @@ public class AdventureGame {
                         name + " SIGNING OUT!");
                 break;
             case 5: // You couldn't defeat the monster in the set amount of times
+                endings[4] = "[WHAT IS WRONG WITH THESE ENDING NAMES ENDING ACHIEVED - ENDING 5]";
                 System.out.println("You couldn't defeat the monster in time! You run away like how I ran from my ex-wife!" +
                         "\n\n\n[WHAT IS WRONG WITH THESE ENDING NAMES ENDING ACHIEVED - ENDING 5]\n\n" +
                         name + " SIGNING OUT!");
                 break;
             case 6: // The secret ending for killing the pineapple
+                endings[5] = "[DER EINE ENDING ACHIEVED - SECRET ENDING]";
                 System.out.println("You have killed a god. The pineapple god dissolves in the golden wind.\n" +
                         "What will you do now? There's nothing left for you, or anyone else.\n" +
                         "The sky has lost it's sun and the world is plunged into darkness.\n\n\n" +
@@ -586,22 +600,62 @@ public class AdventureGame {
                         name + " SIGNING OUT!");
                 break;
             case 7: // After you died 2 times to the pineapple
+                endings[6] = "[OBLITERATED ENDING ACHIEVED - ENDING 7]";
                 System.out.println("\nYou have no right." +
                         "\n\n\n[OBLITERATED ENDING ACHIEVED - ENDING 7]");
                 break;
             case 8: // You and the mushroom reach 0 hp
+                endings[7] = "[SHOULD HAVE USED THE FLOWER - ENDING 8]";
                 System.out.println("You both lost. You become a mushroom ghost and the mushroom became a human ghost. \n\n\n" +
                         "[SHOULD HAVE USED THE FLOWER - ENDING 8]\n\n" + name + " SIGNING OUT!");
                 break;
             case 9: // You and the pineapple reach 0 hp
+                endings[8] = "[I CAN'T WAIT FOR DELTARUNE CHAPTER 3 ENDING ACHIEVED - ENDING 9]";
                 System.out.println("The two of explode into smithereens. The sky is clear and the sun is shining.\n\n\n" +
                         "[I CAN'T WAIT FOR DELTARUNE CHAPTER 3 ENDING ACHIEVED - ENDING 9]");
 
                 break;
             case 10: // You lose to the mushroom
+                endings[9] = "[YOU GOT THRASHED ENDING ACHIEVED - ENDING 10]";
                 System.out.println("You get thrashed by the mushroom. You become a mushroom ghost. Your ancestors are ashamed...\n\n\n" +
-                        "[YOU GOT THRASHED ENDING ACHIEVED - ENDING 10");
+                        "[YOU GOT THRASHED ENDING ACHIEVED - ENDING 10]");
                 break;
+        }
+    }
+
+    public void menu() {
+        while (true) {
+            System.out.println("\n\nMENU:\n");
+            System.out.println("--------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------");
+            System.out.println("1. Start!\n2. Achievements\n3. Exit Game");
+            decision = scan.nextLine();
+            switch (decision) {
+                case "1":
+                    System.out.println("--------------------------------------------------------------------------");
+                    System.out.println("--------------------------------------------------------------------------");
+                    System.out.println("Starting game...");
+                    System.out.println("--------------------------------------------------------------------------");
+                    System.out.println("--------------------------------------------------------------------------");
+                    printStory();
+                    break;
+                case "2":
+                    System.out.println("--------------------------------------------------------------------------");
+                    System.out.println("--------------------------------------------------------------------------");
+                    System.out.println("Endings Achieved:\n");
+                    for (int i = 0; i < endings.length; i++) {
+                        System.out.print(endings[i] + "\n");
+                    }
+                    break;
+                case "3":
+                    System.out.println("Buh-bye.");
+                    System.exit(0);
+                default:
+                    System.out.println("Error!");
+                    break;
+            }
+            System.out.println("--------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------");
         }
     }
 

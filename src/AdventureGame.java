@@ -624,6 +624,10 @@ public class AdventureGame {
     }
 
     public void menu() {
+        inventory = "";
+        playerHealth = 100;
+        mushroomHealth = 100;
+        pineappleHealth = 100;
         while (true) {
             System.out.println("\n\nMENU:\n");
             System.out.println("--------------------------------------------------------------------------");

@@ -361,7 +361,7 @@ public class AdventureGame {
                 System.out.println("--------------------------------------------------------------------------");
                 System.out.println("--------------------------------------------------------------------------");
                 System.out.println("You have " + playerHealth + " HP!");
-                System.out.println("The pineapple god has " + pineappleHealth + " HP!\n\n");
+                System.out.println("The pineapple god has " + (pineappleHealth - playerAttack - 20) + " HP!\n\n");
                 turn++;
 
                 if (playerHealth <= 0 && pineappleHealth <= 0) {
@@ -408,7 +408,7 @@ public class AdventureGame {
                     menu();
                 }
             }
-            if (turn == 7) {
+            if ((turn == 7) && (playerHealth > 0)) {
                 printStory(5);
                 menu();
             }
